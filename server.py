@@ -37,15 +37,13 @@ async def archive(request):
                 await asyncio.sleep(args.latency)
         logging.debug(f"Folder '{files_path}' zipped successfully.")
     except BaseException as e:
-        logging.debug(type(e))
-        logging.debug(e)
-        if not proc.returncode:
-            proc.kill()
-        if not proc.returncode:
+        logging.debug(f"{type(e)}: {e}")
+        proc.kill()
+        if proc.returncode is None:
             await proc.communicate()
         logging.debug("Download was interrupted")
-    finally:
-        return response
+
+    return response
 
 
 async def handle_index_page(_request):
